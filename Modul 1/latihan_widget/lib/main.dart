@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Hello Flutter!',
-              style: TextStyle(
-                  fontSize: 12, fontWeight: FontWeight.w900, color:
-              Colors.deepPurple, letterSpacing: 2,),
+        child: Container(
+          width: 300, height: 100,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(100),
+            border: Border.all(
+              color: Colors.black,
+              width: 4,
             ),
-            SizedBox(height: 8),
-            Text('Ini teks biasa dengan ukuran kecil',
-              style: TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-          ],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withValues(alpha: 0.3),
+                blurRadius: 50,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: const Center(
+            child: Text('Box',
+                style: TextStyle(color: Colors.white, fontSize: 24)),
+          ),
         ),
       ),
     ),

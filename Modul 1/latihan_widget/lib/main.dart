@@ -10,8 +10,8 @@ void main() {
           children: [
             Text('Hello Flutter!',
               style: TextStyle(
-                  fontSize: 28, fontWeight: FontWeight.bold, color:
-              Colors.blue),
+                  fontSize: 12, fontWeight: FontWeight.w900, color:
+              Colors.deepPurple, letterSpacing: 2,),
             ),
             SizedBox(height: 8),
             Text('Ini teks biasa dengan ukuran kecil',

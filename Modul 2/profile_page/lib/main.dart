@@ -17,6 +17,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF1F8E9),
       appBar: AppBar(
         title: const Text('Profil Saya'),
         actions: [
@@ -39,7 +40,27 @@ class ProfilePage extends StatelessWidget {
             ListTile(leading: Icon(Icons.home), title: Text('Beranda')),
             ListTile(leading: Icon(Icons.person), title: Text('Profil')),
             ListTile(leading: Icon(Icons.info), title: Text('Tentang')),
-            ListTile(leading: Icon(Icons.settings), title: Text('Pengaturan')),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Pengaturan'),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: const Text('Pengaturan'),
+                    content: const Text(
+                      'Halaman pengaturan belum tersedia',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Tutup'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
             ListTile(leading: const Icon(Icons.widgets), title: const Text('Widget Gallery'),
               onTap: () {
                 Navigator.pop(context);
@@ -65,10 +86,8 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   const CircleAvatar(
                     radius: 50,
-                    backgroundColor: Colors.blue,
-                    child: Text(
-                      '😎',
-                      style: TextStyle(fontSize: 50),
+                    backgroundImage: NetworkImage(
+                      'https://avatars.githubusercontent.com/u/116247408?s=400&u=cbb61570c6ad0193d11ca75fb03a9c901c1bf596&v=4',
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -111,10 +130,51 @@ class ProfilePage extends StatelessWidget {
               title: 'Hobi & Minat',
               content: 'Coding • Membaca • Game',
             ),
-            _SectionCard(
-              icon: Icons.star,
-              title: 'Skills',
-              content: 'Flutter • Dart • HTML • CSS • JavaScript',
+            Card(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.star,
+                      color: Colors.blue,
+                      size: 28,
+                    ),
+                    const SizedBox(width: 16),
+
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Skills',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: const [
+                              Chip(label: Text('Flutter')),
+                              Chip(label: Text('Dart')),
+                              Chip(label: Text('HTML')),
+                              Chip(label: Text('CSS')),
+                              Chip(label: Text('JavaScript')),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             _SectionCard(
               icon: Icons.email,
@@ -126,19 +186,35 @@ class ProfilePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Edit profil belum tersedia'),
+            ),
+          );
+        },
         child: const Icon(Icons.edit),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 3,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
-          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Pesan'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 1,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.message),
+            label: 'Pesan',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings),
+            label: 'Setting',
+          ),
         ],
-        onTap: (i) {},
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(const MyApp());
 }
+
 class Catatan {
   final String judul;
   final String isi;
@@ -25,24 +26,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Catatan Mahasiswa',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorSchemeSeed: Colors.indigo,
-        useMaterial3: true,
-      ),
-
+      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
       initialRoute: '/',
-
       routes: {
         '/': (context) => const HomePage(),
       },
-
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/tambah':
-            return MaterialPageRoute(
-              builder: (_) => const TambahCatatanPage(),
-            );
-
+            return MaterialPageRoute(builder: (_) => const TambahCatatanPage());
           case '/detail':
             final catatan = settings.arguments as Catatan;
             return MaterialPageRoute(
@@ -72,18 +64,8 @@ class _HomePageState extends State<HomePage> {
       dibuatPada: DateTime.now(),
     ),
   ];
-
-  void _tambahDummy() {
-    setState(() {
-      _catatan.add(
-        Catatan(
-          judul: 'Catatan ${_catatan.length + 1}',
-          isi: 'Isi dummy',
-          kategori: 'Lainnya',
-          dibuatPada: DateTime.now(),
-        ),
-      );
-    });
+  String _formatTanggal(DateTime dt) {
+    return '${dt.day}/${dt.month}/${dt.year}';
   }
 
   Future<void> _bukaTambahCatatan() async {
@@ -102,23 +84,42 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(title: const Text('Catatan Mahasiswa')),
-      body: ListView.builder(
+      body: _catatan.isEmpty
+          ? const _EmptyState()
+          : ListView.builder(
         itemCount: _catatan.length,
         itemBuilder: (context, i) {
           final c = _catatan[i];
+
           return ListTile(
             title: Text(c.judul),
-            subtitle: Text(c.kategori),
+
+            subtitle: Text(
+              '${c.kategori} • ${_formatTanggal(c.dibuatPada)}',
+            ),
+
             onTap: () {
-              Navigator.pushNamed(context, '/detail', arguments: c);
+              Navigator.pushNamed(
+                context,
+                '/detail',
+                arguments: c,
+              );
             },
+
+            trailing: IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                setState(() {
+                  _catatan.removeAt(i);
+                });
+              },
+            ),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _tambahDummy,
+        onPressed: _bukaTambahCatatan,
         child: const Icon(Icons.add),
       ),
     );
@@ -136,6 +137,7 @@ class _TambahCatatanPageState extends State<TambahCatatanPage> {
   final _formKey = GlobalKey<FormState>();
   final _judulCtrl = TextEditingController();
   final _isiCtrl = TextEditingController();
+  final _emailCtrl = TextEditingController();
 
   String _kategori = 'Kuliah';
   final _kategoriOpsi = const ['Kuliah', 'Tugas', 'Pribadi', 'Lainnya'];
@@ -145,6 +147,7 @@ class _TambahCatatanPageState extends State<TambahCatatanPage> {
     // PENTING: bebaskan resource controller agar tidak memory leak.
     _judulCtrl.dispose();
     _isiCtrl.dispose();
+    _emailCtrl.dispose();
     super.dispose();
   }
 
@@ -180,6 +183,29 @@ class _TambahCatatanPageState extends State<TambahCatatanPage> {
               validator: (v) {
                 if (v == null || v.trim().isEmpty) return 'Judul wajib diisi';
                 if (v.trim().length < 3) return 'Minimal 3 karakter';
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _emailCtrl,
+              decoration: const InputDecoration(
+                labelText: 'Email Pengirim',
+                prefixIcon: Icon(Icons.email),
+                border: OutlineInputBorder(),
+              ),
+              validator: (v) {
+                if (v == null || v.trim().isEmpty) {
+                  return 'Email wajib diisi';
+                }
+
+                final emailRegex =
+                RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+
+                if (!emailRegex.hasMatch(v.trim())) {
+                  return 'Format email tidak valid';
+                }
+
                 return null;
               },
             ),
@@ -244,6 +270,37 @@ class DetailCatatanPage extends StatelessWidget {
                 style: const TextStyle(fontSize: 16, height: 1.5)),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.note_alt_outlined,
+            size: 72,
+          ),
+          SizedBox(height: 12),
+          Text(
+            'Belum ada catatan',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            'Tekan tombol + untuk menambah catatan',
+          ),
+        ],
       ),
     );
   }

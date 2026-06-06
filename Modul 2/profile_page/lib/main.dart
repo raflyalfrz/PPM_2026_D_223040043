@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
+
 void main() {
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ProfilePage(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFFF5F7FA),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFE8F0FE),
+        ),
+      ),
+      home: const ProfilePage(),
     );
   }
 }
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F8E9),
       appBar: AppBar(
         title: const Text('Profil Saya'),
         actions: [
@@ -30,16 +40,27 @@ class ProfilePage extends StatelessWidget {
       drawer: Drawer(
         child: ListView(
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(color: Colors.blue),
               child: Text(
                 'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
               ),
             ),
-            ListTile(leading: Icon(Icons.home), title: Text('Beranda')),
-            ListTile(leading: Icon(Icons.person), title: Text('Profil')),
-            ListTile(leading: Icon(Icons.info), title: Text('Tentang')),
+
+            const ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Beranda'),
+            ),
+
+            const ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Profil'),
+            ),
+
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Pengaturan'),
@@ -49,7 +70,7 @@ class ProfilePage extends StatelessWidget {
                   builder: (_) => AlertDialog(
                     title: const Text('Pengaturan'),
                     content: const Text(
-                      'Halaman pengaturan belum tersedia',
+                      'Fitur pengaturan belum tersedia.',
                     ),
                     actions: [
                       TextButton(
@@ -61,7 +82,10 @@ class ProfilePage extends StatelessWidget {
                 );
               },
             ),
-            ListTile(leading: const Icon(Icons.widgets), title: const Text('Widget Gallery'),
+
+            ListTile(
+              leading: const Icon(Icons.widgets),
+              title: const Text('Widget Gallery'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -103,16 +127,20 @@ class ProfilePage extends StatelessWidget {
                 ],
               ),
             ),
+
             const SizedBox(height: 24),
+
             // === BARIS STATISTIK (Row + Expanded) ===
             Row(
               children: [
-                Expanded(child: _StatBox(label: 'Post', value: '40')),
+                Expanded(child: _StatBox(label: 'Post', value: '12')),
                 Expanded(child: _StatBox(label: 'Teman', value: '128')),
-                Expanded(child: _StatBox(label: 'Like', value: '6.2M')),
+                Expanded(child: _StatBox(label: 'Like', value: '1.2K')),
               ],
             ),
+
             const SizedBox(height: 24),
+
             // === SECTION CARD ===
             _SectionCard(
               icon: Icons.info_outline,
@@ -129,6 +157,11 @@ class ProfilePage extends StatelessWidget {
               icon: Icons.favorite,
               title: 'Hobi & Minat',
               content: 'Coding • Membaca • Game',
+            ),
+            _SectionCard(
+              icon: Icons.email,
+              title: 'Kontak',
+              content: 'rafly.223040043@mail.unpas.ac.id\n+62 812-8550-9120',
             ),
             Card(
               margin: const EdgeInsets.only(bottom: 12),
@@ -148,25 +181,22 @@ class ProfilePage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Skills',
-                            style: TextStyle(
-                              fontSize: 16,
+                          const Text('Skills', style: TextStyle(
+                             fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
 
-                          const SizedBox(height: 8),
-
+                          const SizedBox(height: 10),
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
                             children: const [
                               Chip(label: Text('Flutter')),
                               Chip(label: Text('Dart')),
-                              Chip(label: Text('HTML')),
-                              Chip(label: Text('CSS')),
-                              Chip(label: Text('JavaScript')),
+                              Chip(label: Text('Firebase')),
+                              Chip(label: Text('UI/UX')),
+                              Chip(label: Text('Git')),
                             ],
                           ),
                         ],
@@ -176,53 +206,44 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            _SectionCard(
-              icon: Icons.email,
-              title: 'Kontak',
-              content: 'email@example.com\n+62 812-3456-7890',
-            ),
+
             const SizedBox(height: 80), // ruang agar FAB tidak nutupi konten
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Edit profil belum tersedia'),
+              content: Text(
+                'Edit profil belum tersedia',
+              ),
             ),
           );
         },
-        child: const Icon(Icons.edit),
+        label: const Text('Edit'),
+        icon: const Icon(Icons.edit),
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: 1,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.message),
-            label: 'Pesan',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings),
-            label: 'Setting',
-          ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 3,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Pesan'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
         ],
+        onTap: (i) {},
       ),
     );
   }
 }
+
 class _StatBox extends StatelessWidget {
   final String label;
   final String value;
   const _StatBox({required this.label, required this.value});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -235,11 +256,17 @@ class _StatBox extends StatelessWidget {
     );
   }
 }
+
 class _SectionCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String content;
-  const _SectionCard({required this.icon, required this.title, required this.content});
+  const _SectionCard({
+    required this.icon,
+    required this.title,
+    required this.content,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -247,25 +274,25 @@ class _SectionCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Icon(icon, color: Colors.blue, size: 28),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              Text(title,
-              style: const TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 6),
-          Text(content, style: const TextStyle(height: 1.4)),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 6),
+                  Text(content, style: const TextStyle(height: 1.4)),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-      ],
-    ),
-    ),
     );
   }
 }
@@ -276,41 +303,37 @@ class GalleryHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categories = [
-      ('Display', Icons.image, Colors.blue),
-      ('Input', Icons.edit, Colors.green),
-      ('Button', Icons.smart_button, Colors.orange),
-      ('Feedback', Icons.notifications, Colors.purple),
-      ('Layout', Icons.dashboard, Colors.teal),
+      ('Display', Icons.image, Colors.green),
+      ('Input', Icons.edit, Colors.purple),
+      ('Button', Icons.smart_button, Colors.red),
+      ('Feedback', Icons.notifications, Colors.yellow),
+      ('Layout', Icons.dashboard, Colors.black),
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Widget Gallery'),
-      ),
+      appBar: AppBar(title: const Text('Widget Gallery')),
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemCount: categories.length,
         separatorBuilder: (_, __) => const SizedBox(height: 8),
         itemBuilder: (context, i) {
           final (name, icon, color) = categories[i];
-
           return Card(
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: color,
-                child: Icon(
-                  icon,
-                  color: Colors.white,
-                ),
+                child: Icon(icon, color: Colors.white),
               ),
               title: Text(name),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => CategoryPage(name: name),
-                ),
-              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CategoryPage(name: name),
+                  ),
+                );
+              },
             ),
           );
         },
@@ -321,11 +344,7 @@ class GalleryHome extends StatelessWidget {
 
 class CategoryPage extends StatelessWidget {
   final String name;
-
-  const CategoryPage({
-    super.key,
-    required this.name,
-  });
+  const CategoryPage({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -335,15 +354,11 @@ class CategoryPage extends StatelessWidget {
       'Button' => const _ButtonDemo(),
       'Feedback' => const _FeedbackDemo(),
       'Layout' => const _LayoutDemo(),
-      _ => const Center(
-        child: Text('?'),
-      ),
+      _ => const Center(child: Text('?')),
     };
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(name),
-      ),
+      appBar: AppBar(title: Text(name)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: body,
@@ -354,17 +369,12 @@ class CategoryPage extends StatelessWidget {
 
 class _DisplayDemo extends StatelessWidget {
   const _DisplayDemo();
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Card',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-
+        const Text('Card', style: TextStyle(fontWeight: FontWeight.bold)),
         const Card(
           child: ListTile(
             leading: Icon(Icons.album),
@@ -372,14 +382,8 @@ class _DisplayDemo extends StatelessWidget {
             subtitle: Text('Sub-judul'),
           ),
         ),
-
         const SizedBox(height: 16),
-
-        const Text(
-          'Chip',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-
+        const Text('Chip', style: TextStyle(fontWeight: FontWeight.bold)),
         Wrap(
           spacing: 8,
           children: const [
@@ -388,38 +392,27 @@ class _DisplayDemo extends StatelessWidget {
             Chip(label: Text('Mobile')),
           ],
         ),
-
         const SizedBox(height: 16),
-
-        const Text(
-          'Divider',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-
+        const Text('Divider', style: TextStyle(fontWeight: FontWeight.bold)),
         const Divider(thickness: 2),
-
+        const SizedBox(height: 16),
+        const Text('CircleAvatar & Icon',
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        Row(children: const [
+          CircleAvatar(child: Text('A')),
+          SizedBox(width: 12),
+          CircleAvatar(backgroundColor: Colors.green, child: Icon(Icons.check)),
+          SizedBox(width: 12),
+          Icon(Icons.star, color: Colors.amber, size: 40),
+        ]),
         const SizedBox(height: 16),
 
-        const Text(
-          'CircleAvatar & Icon',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-
-        Row(
-          children: const [
-            CircleAvatar(child: Text('A')),
-            SizedBox(width: 12),
-            CircleAvatar(
-              backgroundColor: Colors.green,
-              child: Icon(Icons.check),
-            ),
-            SizedBox(width: 12),
-            Icon(
-              Icons.star,
-              color: Colors.amber,
-              size: 40,
-            ),
-          ],
+        Tooltip(
+          message: 'Ini tooltip Flutter',
+          child: Icon(
+            Icons.info,
+            size: 40,
+          ),
         ),
       ],
     );
@@ -428,7 +421,6 @@ class _DisplayDemo extends StatelessWidget {
 
 class _InputDemo extends StatefulWidget {
   const _InputDemo();
-
   @override
   State<_InputDemo> createState() => _InputDemoState();
 }
@@ -445,9 +437,7 @@ class _InputDemoState extends State<_InputDemo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('TextField'),
-
         const SizedBox(height: 4),
-
         const TextField(
           decoration: InputDecoration(
             border: OutlineInputBorder(),
@@ -455,47 +445,30 @@ class _InputDemoState extends State<_InputDemo> {
             hintText: 'Ketik nama Anda',
           ),
         ),
-
         const SizedBox(height: 16),
-
         CheckboxListTile(
           title: const Text('Checkbox'),
           value: _checked,
-          onChanged: (v) =>
-              setState(() => _checked = v ?? false),
+          onChanged: (v) => setState(() => _checked = v ?? false),
         ),
-
         SwitchListTile(
           title: const Text('Switch'),
           value: _switched,
-          onChanged: (v) =>
-              setState(() => _switched = v),
+          onChanged: (v) => setState(() => _switched = v),
         ),
-
         const Text('Slider'),
-
         Slider(
           value: _slider,
-          onChanged: (v) =>
-              setState(() => _slider = v),
+          onChanged: (v) => setState(() => _slider = v),
         ),
-
         const SizedBox(height: 8),
-
         const Text('Dropdown'),
-
         DropdownButton<String>(
           value: _dropdown,
           items: ['Apel', 'Jeruk', 'Mangga']
-              .map(
-                (e) => DropdownMenuItem(
-              value: e,
-              child: Text(e),
-            ),
-          )
+              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
               .toList(),
-          onChanged: (v) =>
-              setState(() => _dropdown = v),
+          onChanged: (v) => setState(() => _dropdown = v),
         ),
       ],
     );
@@ -504,54 +477,28 @@ class _InputDemoState extends State<_InputDemo> {
 
 class _ButtonDemo extends StatelessWidget {
   const _ButtonDemo();
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ElevatedButton(
-          onPressed: () {},
-          child: const Text('Elevated'),
-        ),
-
+        ElevatedButton(onPressed: () {}, child: const Text('Elevated')),
         const SizedBox(height: 8),
-
-        FilledButton(
-          onPressed: () {},
-          child: const Text('Filled'),
-        ),
-
+        FilledButton(onPressed: () {}, child: const Text('Filled')),
         const SizedBox(height: 8),
-
-        OutlinedButton(
-          onPressed: () {},
-          child: const Text('Outlined'),
-        ),
-
+        OutlinedButton(onPressed: () {}, child: const Text('Outlined')),
         const SizedBox(height: 8),
-
-        TextButton(
-          onPressed: () {},
-          child: const Text('Text Button'),
-        ),
-
+        TextButton(onPressed: () {}, child: const Text('Text Button')),
         const SizedBox(height: 8),
-
         ElevatedButton.icon(
           onPressed: () {},
           icon: const Icon(Icons.send),
           label: const Text('Dengan Icon'),
         ),
-
         const SizedBox(height: 8),
-
         IconButton(
           onPressed: () {},
-          icon: const Icon(
-            Icons.favorite,
-            color: Colors.red,
-          ),
+          icon: const Icon(Icons.favorite, color: Colors.red),
         ),
       ],
     );
@@ -560,7 +507,6 @@ class _ButtonDemo extends StatelessWidget {
 
 class _FeedbackDemo extends StatelessWidget {
   const _FeedbackDemo();
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -569,16 +515,12 @@ class _FeedbackDemo extends StatelessWidget {
         ElevatedButton(
           onPressed: () {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Halo dari SnackBar!'),
-              ),
+              const SnackBar(content: Text('Halo dari SnackBar!')),
             );
           },
           child: const Text('Tampilkan SnackBar'),
         ),
-
         const SizedBox(height: 8),
-
         ElevatedButton(
           onPressed: () {
             showDialog(
@@ -601,20 +543,12 @@ class _FeedbackDemo extends StatelessWidget {
           },
           child: const Text('Tampilkan Dialog'),
         ),
-
         const SizedBox(height: 16),
-
         const Text('Progress Indicator:'),
-
         const SizedBox(height: 8),
-
         const LinearProgressIndicator(value: 0.6),
-
         const SizedBox(height: 12),
-
-        const Center(
-          child: CircularProgressIndicator(),
-        ),
+        const Center(child: CircularProgressIndicator()),
       ],
     );
   }
@@ -622,54 +556,32 @@ class _FeedbackDemo extends StatelessWidget {
 
 class _LayoutDemo extends StatelessWidget {
   const _LayoutDemo();
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Stack — widget bertumpuk'),
-
         const SizedBox(height: 8),
-
         SizedBox(
           height: 120,
           child: Stack(
             children: [
-              Container(
-                width: double.infinity,
-                color: Colors.blue.shade100,
-              ),
-
+              Container(width: double.infinity, color: Colors.blue.shade100),
               Positioned(
-                top: 12,
-                left: 12,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  color: Colors.red,
-                ),
+                top: 40, left: 20,
+                child: Container(width: 50, height: 50, color: Colors.red),
               ),
-
               const Positioned(
-                bottom: 12,
-                right: 12,
-                child: Icon(
-                  Icons.star,
-                  size: 40,
-                  color: Colors.amber,
-                ),
+                bottom: 60, right: 120,
+                child: Icon(Icons.star, size: 40, color: Colors.amber),
               ),
             ],
           ),
         ),
-
         const SizedBox(height: 16),
-
         const Text('Wrap — auto-pindah baris saat penuh'),
-
         const SizedBox(height: 8),
-
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -682,13 +594,9 @@ class _LayoutDemo extends StatelessWidget {
             ),
           ),
         ),
-
         const SizedBox(height: 16),
-
         const Text('GridView (count: 3)'),
-
         const SizedBox(height: 8),
-
         SizedBox(
           height: 200,
           child: GridView.count(

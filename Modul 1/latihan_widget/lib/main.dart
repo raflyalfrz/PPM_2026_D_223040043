@@ -1,32 +1,39 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text("Column di atas"),
-            SizedBox(height: 20),
-
+            Text('Baris di bawah ini menggunakan Row:'),
+            SizedBox(height: 16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(width: 50, height: 50, color: Colors.red),
-                SizedBox(width: 10),
-                Container(width: 50, height: 50, color: Colors.blue),
-                SizedBox(width: 10),
-                Container(width: 50, height: 50, color: Colors.green),
+                _Kotak(color: Colors.red),
+                _Kotak(color: Colors.green),
+                _Kotak(color: Colors.blue),
               ],
             ),
-
-            SizedBox(height: 20),
-            Text("Column di bawah"),
+            SizedBox(height: 16),
+            Text('Column = vertikal ↕'),
+            Text('Row = horizontal ↔'),
           ],
         ),
       ),
     ),
   ));
+}
+
+class _Kotak extends StatelessWidget {
+  final Color color;
+  const _Kotak({required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(width: 60, height: 60, color: color);
+  }
 }

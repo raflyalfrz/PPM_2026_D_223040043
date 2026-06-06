@@ -45,11 +45,11 @@ class MyApp extends StatelessWidget {
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('NIM: 123456789', style: TextStyle(fontSize: 16)),
+                    Text('NIM: 223040043', style: TextStyle(fontSize: 16)),
                     SizedBox(height: 4),
                     Text('Prodi: Teknik Informatika', style: TextStyle(fontSize: 16)),
                     SizedBox(height: 4),
-                    Text('Semester: 5', style: TextStyle(fontSize: 16)),
+                    Text('Semester: 8', style: TextStyle(fontSize: 16)),
                   ],
                 ),
               ),

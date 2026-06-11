@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'api_client.dart';
 
 void main() {
-  // Wajib: sqflite butuh binding Flutter sudah diinisialisasi sebelum
-  // ada operasi platform channel (saat DB pertama kali dibuka).
   runApp(const MyApp());
 }
 
@@ -385,7 +383,7 @@ class _CatatanFormPageState extends State<CatatanFormPage> {
   }
 
   Future<void> _simpan() async {
-    if (!_formKey.currentState!.validate()) return;
+    //if (!_formKey.currentState!.validate()) return;
 
     setState(() => _menyimpan = true);
 

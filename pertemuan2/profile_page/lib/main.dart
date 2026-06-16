@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'quiz_pertemuan3.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color(0xFFE8F0FE),
         ),
       ),
-      home: const ProfilePage(),
+      home: const ProfilePageV3(),
     );
   }
 }
@@ -161,7 +162,7 @@ class ProfilePage extends StatelessWidget {
             _SectionCard(
               icon: Icons.email,
               title: 'Kontak',
-              content: 'rafly.223040043@mail.unpas.ac.id\n+62 812-8550-9120',
+              content: 'rafly.223040043@mail.unpas.ac.id',
             ),
             Card(
               margin: const EdgeInsets.only(bottom: 12),
@@ -221,7 +222,7 @@ class ProfilePage extends StatelessWidget {
             ),
           );
         },
-        label: const Text('Edit'),
+        label: const Text('Edit Profil'),
         icon: const Icon(Icons.edit),
       ),
       bottomNavigationBar: BottomNavigationBar(
